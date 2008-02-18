@@ -1,0 +1,67 @@
+type maze_t = Block of string
+           |  Wall of int
+           |  Empty of int
+           
+type bonus_t = 
+    | Add_one_life
+    | Steal_one_life (* graal *)
+    | Speed
+;;
+
+type malus_t = 
+    | Remove_one_life
+    | Slow_down
+;;
+
+type item_t = 
+	| Lifelong_bonus of bonus_t
+	| Lifelong_malus of malus_t
+	| Limited_malus of malus_t * int (* seconds *)
+	| Limited_bonus of bonus_t * int (* seconds *)
+            
+type bomb_action_t =
+    | Explode
+ 
+type direction_t =
+	| Top
+	| Bottom
+	| Left
+	| Right
+;;
+
+type player_action_t =
+	| Move of direction_t
+	| Push_bomb of direction_t
+	| Jump_walls of int
+;;
+
+type bomb_modifier_t =
+	| Cross of int
+	| Square of int
+	| Fungus of int (* time to live *)
+;;
+
+type bomb = {
+    player: player_t ;
+	modifiers: bomb_modifier_t list
+};;
+
+type bomb_action_t = 
+	| Appear_at of int * int
+	| Explode;;
+
+type action_t = 
+     | Bomb of bomb_action_t
+     | Player of player_action_t
+     | Display of int * int * string
+;;
+
+
+let main () = 
+    Graphics.open_graph " 320x200+50+50";
+    Graphics.set_window_title "Just Nuke It";
+    Graphics.wait_next_event [];
+    Graphics.close_graph ()
+;;
+
+main ();

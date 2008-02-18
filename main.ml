@@ -20,10 +20,12 @@ type game_event_t =
 
 
 let dispatch_status optstatus =
-  let dispatch_keypress = 
-    function
+  let dispatch_keypress key = 
+    match key with
     | 'q' -> Quit
-    | _ -> NoEvent
+    | _ -> 
+        Printf.printf "Unknown action for key (%c)\n" key; 
+        NoEvent
   in
   match optstatus with
   | None -> (* only draw *) 
@@ -41,7 +43,7 @@ let e_send chan data =
   Event.sync ( Event.send chan data ) 
 ;;
 
-let ticker pfd_out req_channel notif_channel =
+let tick_run pfd_out req_channel notif_channel =
   let buf = String.make 1 ' ' in
   while true do
     let delay = e_receive req_channel in
@@ -54,10 +56,10 @@ let ticker pfd_out req_channel notif_channel =
   done
 ;;
 
-let key_listener notif_channel =
+let graphic_run listen_lst notif_channel =
   while true do
     let event = 
-        Graphics.wait_next_event [Graphics.Key_pressed] 
+        Graphics.wait_next_event listen_lst
     in
     ignore (e_send notif_channel (Graphics_status event));
   done
@@ -67,12 +69,13 @@ let game_loop () =
   let ( pfd_out, pfd_in ) = Unix.pipe ()
   and tick_request_channel = Event.new_channel ()
   and tick_notification_channel = Event.new_channel ()
-  and key_notification_channel = Event.new_channel ()
+  and graphic_notification_channel = Event.new_channel ()
   in
-  let tick_listener = ticker pfd_out tick_request_channel 
+  let tick_listener = tick_run pfd_out tick_request_channel 
+  and graphic_listener = graphic_run [Graphics.Key_pressed]
   in
   let thr_tick =  Thread.create tick_listener tick_notification_channel
-  and thr_input = Thread.create key_listener key_notification_channel
+  and thr_input = Thread.create graphic_listener graphic_notification_channel
   in
   let ack () = 
     ignore ( Unix.write pfd_in "." 0 1 )
@@ -80,7 +83,7 @@ let game_loop () =
   let time_wait_next_event time lst = 
     e_send tick_request_channel time;
     match Event.select [Event.receive tick_notification_channel;
-                        Event.receive key_notification_channel]
+                        Event.receive graphic_notification_channel]
     with
     | Tick -> None
     | Graphics_status status -> 
@@ -94,6 +97,14 @@ let game_loop () =
     let opt_status = time_wait_next_event 0.05 [Graphics.Key_pressed]
     in
     match dispatch_status opt_status with
+    | MoveLeft -> print_string "Move Left...\n";
+    | MoveRight -> print_string "Move Right...\n";
+    | MoveUp -> print_string "Move up\n";
+    | MoveDown -> print_string "Move down\n";
+    | Action -> print_string "Action\n";
+    | ActionTwo -> print_string "ActionTwo\n";
+    | Help -> print_string "Help\n";
+    | NoEvent -> ();
     | Quit -> 
         continue := false ;
         print_string "Exiting...\n";

@@ -1,30 +1,26 @@
 PROGRAMS=justnukeit
 
 justnukeit_OBJS=Position.cmx Maze.cmx Player.cmx main.cmx
-justnukeit_LIBS=graphics.cmxa
+justnukeit_LIBS=graphics.cmxa unix.cmxa threads.cmxa
 
 MODULES=$(patsubst %.mli,%,$(wildcard *.mli)) $(patsubst %.ml,%,$(wildcard *.ml))
 
 CMI=$(patsubst %.ml,%.cmi,$(MODULES:=.ml))
 CMO=$(patsubst %.ml,%.cmo,$(MODULES:=.ml))
 CMX=$(patsubst %.ml,%.cmx,$(MODULES:=.ml))
-#LIB=unix.cmxa str.cmxa graphics.cmxa
 LIB=
 
 OCAMLDEP=ocamldep
 OCAMLOPT=ocamlopt
 OCAMLC=ocamlc
 
-
-SOURCE=main.ml
-
-OPTS=-w A -g 
+OPTS=-w A -g -thread
 
 define PROGRAM_template
 ALL_OBJS   += $$($(1)_OBJS)
 $(1): $$($(1)_OBJS)
 	@echo -n -e "\x1B[31;1m"
-	@echo "[O] $@"
+	@echo "[L] $@"
 	@echo -n -e "\x1B[0m"
 	$(OCAMLOPT) $(OPTS) $($(1)_LIBS) $($(1)_OBJS) -o $(1)
 	@echo ""
@@ -48,7 +44,7 @@ all: $(PROGRAMS)
 	@echo -n -e "\x1B[31;1m"
 	@echo "[C] $<"
 	@echo -n -e "\x1B[0m"
-	@$(OCAMLOPT) -i $<
+	@$(OCAMLOPT) $(OPTS) -i $<
 	@$(OCAMLOPT) $(OPTS) -c $<
 	@echo ""
 

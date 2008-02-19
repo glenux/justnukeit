@@ -1,8 +1,8 @@
 PROGRAMS=justnukeit
 
-justnukeit_OBJS=Position.cmx Maze.cmx Player.cmx main.cmx
+justnukeit_OBJS=Position Maze Player main
 justnukeit_INCS=sdl
-justnukeit_LIBS=graphics.cmxa unix.cmxa threads.cmxa bigarray.cmxa sdl.cmxa
+justnukeit_LIBS=graphics unix threads bigarray sdl sdlloader sdlttf
 
 MODULES=$(patsubst %.mli,%,$(wildcard *.mli)) $(patsubst %.ml,%,$(wildcard *.ml))
 
@@ -17,12 +17,12 @@ OCAMLC=ocamlc
 OPTS=-w A -g -thread -I +sdl -ccopt -L+sdl
 
 define PROGRAM_template
-ALL_OBJS   += $$($(1)_OBJS)
-$(1): $$($(1)_OBJS)
+ALL_OBJS   += $($(1)_OBJS)
+$(1): $$($(1)_OBJS:=.cmx)
 	@echo -n -e "\x1B[31;1m"
-	@echo "[L] $@"
+	@echo "[L] $(1)"
 	@echo -n -e "\x1B[0m"
-	$(OCAMLOPT) $(OPTS) $($(1)_LIBS) $($(1)_OBJS) -o $(1)
+	$(OCAMLOPT) $(OPTS) $($(1)_LIBS:=.cmxa) $($(1)_OBJS:=.cmx) -o $(1)
 	@echo ""
 endef
 

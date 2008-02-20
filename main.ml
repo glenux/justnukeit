@@ -1,15 +1,21 @@
 (* vim: set ts=2 sw=2 et : *)
 open Event;;
 
+
+
 type config_t = {
   mutable width : int ;
   mutable height : int;
 }
 
+
+
 type notification_t =
   | Graphics_status of Graphics.status
   | Tick
 ;;
+
+
 
 type game_event_t = 
   | MoveLeft
@@ -26,6 +32,8 @@ type game_event_t =
 let image_filename = "images/test.png"
 ;;
 
+
+
 let string_of_keyboard_event event =
   try
     let chr = Sdlkey.char_of_key event.Sdlevent.keysym 
@@ -34,6 +42,8 @@ let string_of_keyboard_event event =
   with
   | Invalid_argument _ -> "unknown-key"
 ;;
+
+
 
 let rec event_loop () =
   print_endline "Event_loop...";
@@ -44,7 +54,7 @@ let rec event_loop () =
         print_endline "You pressed escape! The fun is over now."
 
     | Sdlevent.KEYDOWN event -> 
-        Keyboard.handle_event event
+        Keyboard.handle_event event;
         let keystr = string_of_keyboard_event event
         in
         print_endline ("You pressed " ^ keystr);
@@ -53,12 +63,16 @@ let rec event_loop () =
     | _ -> 
         event_loop ()
   ) in
+
   let event_opt = Sdlevent.poll () 
   in 
+
   match event_opt with
   | None -> event_loop ()
   | Some event -> match_event event;
 ;;
+
+
 
 let game_loop ~screen =
   let image = Sdlloader.load_image image_filename
@@ -67,9 +81,11 @@ let game_loop ~screen =
   in
   Sdlvideo.blit_surface ~src:image ~src_rect:image_from ~dst:screen ~dst_rect:image_to ();
   Sdlvideo.flip screen;
-  let action_fun = event_loop ();
+  (* let action_fun = event_loop () ; *)
   game_loop screen
 ;;
+
+
 
 let main () =
   let player1 = Player.create ()

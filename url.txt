@@ -1,2 +1,4 @@
 * Doc OCamlSDL
   http://ocamlsdl.sourceforge.net/doc/html/
+* SDL Tutorial
+  http://wiki.njh.eu/OCaml_and_SDL

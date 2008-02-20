@@ -4,9 +4,10 @@ justnukeit_OBJS= \
 				 Position \
 				 Maze \
 				 Player \
-				 Game \
-				 Mouse \
+				 Joystick \
 				 Keyboard \
+				 Mouse \
+				 Game \
 				 main
 
 justnukeit_INCS=sdl

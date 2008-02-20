@@ -38,14 +38,13 @@ let string_of_keyboard_event event =
 let rec event_loop () =
   print_endline "Event_loop...";
   Sdltimer.delay 20;
-  let event_opt = Sdlevent.poll () 
-  in 
   let match_event event = (
     match event with 
     | Sdlevent.KEYDOWN {Sdlevent.keysym=Sdlkey.KEY_ESCAPE} ->
         print_endline "You pressed escape! The fun is over now."
 
     | Sdlevent.KEYDOWN event -> 
+        Keyboard.handle_event event
         let keystr = string_of_keyboard_event event
         in
         print_endline ("You pressed " ^ keystr);
@@ -54,6 +53,8 @@ let rec event_loop () =
     | _ -> 
         event_loop ()
   ) in
+  let event_opt = Sdlevent.poll () 
+  in 
   match event_opt with
   | None -> event_loop ()
   | Some event -> match_event event;
@@ -66,7 +67,8 @@ let game_loop ~screen =
   in
   Sdlvideo.blit_surface ~src:image ~src_rect:image_from ~dst:screen ~dst_rect:image_to ();
   Sdlvideo.flip screen;
-  event_loop ();
+  let action_fun = event_loop ();
+  game_loop screen
 ;;
 
 let main () =

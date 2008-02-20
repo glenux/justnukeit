@@ -1,6 +1,14 @@
 PROGRAMS=justnukeit
 
-justnukeit_OBJS=Position Maze Player main
+justnukeit_OBJS= \
+				 Position \
+				 Maze \
+				 Player \
+				 Game \
+				 Mouse \
+				 Keyboard \
+				 main
+
 justnukeit_INCS=sdl
 justnukeit_LIBS=graphics unix threads bigarray sdl sdlloader sdlttf
 

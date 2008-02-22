@@ -1,5 +1,5 @@
 
-type t = {
+type player_t = {
     mutable name : string ;
     mutable lifes : int ;
     mutable position : Position.t;

@@ -2,7 +2,9 @@ PROGRAMS=justnukeit
 
 justnukeit_OBJS= \
 				 Position \
-				 Maze \
+				 Timeline \
+				 Menu \
+				 Level \
 				 Player \
 				 Joystick \
 				 Keyboard \

@@ -1,5 +1,12 @@
 (* vim: set st=2 sw=2 et : *)
 
+type game_t = {
+  level: Level.level_t ;
+  players: Player.player_t array ;
+  (* monsters: Monster.monster.t array ; *)
+  timeline : Timeline.timeline_t ;
+}
+
 let rec refresh_input () = 
   (* poll events *)
   let get_handler_fun ev = 

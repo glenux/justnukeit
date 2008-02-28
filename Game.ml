@@ -7,6 +7,10 @@ type game_t = {
   timeline : Timeline.timeline_t ;
 }
 
+let handle event ev =
+  ignore ev
+;;
+
 let rec refresh_input () = 
   (* poll events *)
   let get_handler_fun ev = 
@@ -25,12 +29,12 @@ let rec refresh_input () =
     | Sdlevent.JOYBUTTONDOWN _ -> Joystick.handle_event
     | Sdlevent.JOYBUTTONUP _ -> Joystick.handle_event
     (* video events *)
-    | Sdlevent.VIDEORESIZE _ -> ignore
-    | Sdlevent.VIDEOEXPOSE -> ignore
-    | Sdlevent.ACTIVE _ -> ignore
+    | Sdlevent.VIDEORESIZE _ -> Video.handle_event
+    | Sdlevent.VIDEOEXPOSE -> Video.handle_event
+    | Sdlevent.ACTIVE _ -> Video.handle_event
     (* system events *)
-    | Sdlevent.QUIT -> ignore
-    | Sdlevent.SYSWM -> ignore
+    | Sdlevent.QUIT -> Game.handle_event
+    | Sdlevent.SYSWM -> Game.handle_event
     (* user defined events *)
     | Sdlevent.USER _ -> ignore
   in

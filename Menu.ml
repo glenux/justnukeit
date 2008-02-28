@@ -1,16 +1,37 @@
 
+(* position are not absolutes, but percentage *)
+(* vim: set ts=2 sw=2 et : *)
+
+type text_t = {
+  position: Position.t;
+  font: string;
+  font_size: int;
+};;
+
+type image_t = {
+  position: Position.t;
+};;
+
+type hover_t = {
+  action: unit -> unit ;
+};;
+
 type widget_t = 
-    | Menu_text of string
-    | Menu_image of 
-    | Menu_clickable 
+  | Menu_text of text_t
+  | Menu_image of string * Position.t * Position.t
+  | Menu_clickable of Position.t * Position.t
+  | Menu_hover of string
 ;;
 
-type menu_t = {
-    widgets : widget_t list ; 
-    click_handle : Position.position_t -> unit ;
-    keyboard_handle : string (* Keyboard.a *)
+(* Menu.t *)
+type t = {
+  widgets : widget_t list ; 
+  click_handle : Position.t -> unit ;
+  keyboard_handle : string (* Keyboard.a *)
+};;
 
-;;
-
-let handle_click pos =
+let handle_event ev =
+  let actions = (Mouse.handle_event ev) :: (Mouse.handle_event ev)
+  in
+  actions;;
 

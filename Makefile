@@ -15,17 +15,20 @@ justnukeit_OBJS= \
 justnukeit_INCS=sdl
 justnukeit_LIBS=graphics unix threads bigarray sdl sdlloader sdlttf
 
-MODULES=$(patsubst %.mli,%,$(wildcard *.mli)) $(patsubst %.ml,%,$(wildcard *.ml))
+MLI=$(wildcard *.mli)
+ML=$(wildcard *.ml)
 
-CMI=$(patsubst %.ml,%.cmi,$(MODULES:=.ml))
-CMO=$(patsubst %.ml,%.cmo,$(MODULES:=.ml))
-CMX=$(patsubst %.ml,%.cmx,$(MODULES:=.ml))
+CMI=$(patsubst %.mli,%.cmi,$(MLI))
+CMO=$(patsubst %.ml,%.cmo,$(ML))
+CMX=$(patsubst %.ml,%.cmx,$(ML))
 
 OCAMLDEP=ocamldep
 OCAMLOPT=ocamlopt
 OCAMLC=ocamlc
 
-OPTS=-w A -g -thread -I +sdl -ccopt -L+sdl
+INCS=-I +sdl
+LIBS=-ccopt -L+sdl
+OPTS=-w A -g -thread $(INCS) $(LIBS)
 
 define PROGRAM_template
 ALL_OBJS   += $($(1)_OBJS)
@@ -41,6 +44,9 @@ $(foreach prog,$(PROGRAMS),$(eval $(call PROGRAM_template,$(prog))))
 
 .PHONY: all
 all: $(PROGRAMS)
+
+doc: 
+	ocamldoc $(INCS) -d doc -html $(ML) $(MLI)
 
 %.cmi: %.mli
 	@echo -n -e "\x1B[31;1m"
@@ -75,8 +81,8 @@ all: $(PROGRAMS)
 clean:
 	rm -f $(PROGRAMS) *~ *.cm* *.o *.a *.so .depend *.cmxa *.cma
 
-.depend: $(MODULES:=.ml)
-	$(OCAMLDEP) $(MODULES:=.ml) $(MODULES:=.mli) > .depend
+.depend: $(ML) $(MLI)
+	$(OCAMLDEP) $(ML) $(MLI) > .depend
 	@echo ""
 
 

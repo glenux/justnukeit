@@ -7,13 +7,18 @@ type game_t = {
   timeline : Timeline.timeline_t ;
 }
 
-let handle event ev =
-  ignore ev
+let handle_event ev =
+  ignore ev ; []
 ;;
 
 let rec refresh_input () = 
   (* poll events *)
-  let get_handler_fun ev = 
+  let match_quit ev =
+    if ev = Sdlevent.QUIT then true
+    else false
+  in
+
+  let match_handler ev = 
     match ev with
     (* key events *)
     | Sdlevent.KEYDOWN _ -> Keyboard.handle_event
@@ -33,10 +38,10 @@ let rec refresh_input () =
     | Sdlevent.VIDEOEXPOSE -> Video.handle_event
     | Sdlevent.ACTIVE _ -> Video.handle_event
     (* system events *)
-    | Sdlevent.QUIT -> Game.handle_event
-    | Sdlevent.SYSWM -> Game.handle_event
+    | Sdlevent.QUIT -> handle_event
+    | Sdlevent.SYSWM -> handle_event
     (* user defined events *)
-    | Sdlevent.USER _ -> ignore
+    | Sdlevent.USER _ -> (fun x -> ignore x ; [] )
   in
 
   let some_event = Sdlevent.poll ()
@@ -44,11 +49,11 @@ let rec refresh_input () =
 
   match some_event with
   | Some ev -> 
-      if ev = Sdlevent.QUIT then ()
-      else
-        let handler_fun = get_handler_fun ev
-        in 
-        handler_fun ev ;
-        refresh_input ()
-    | None -> ()
+      let handler = match_handler ev
+      and quit = match_quit ev
+      in  
+      ignore ( handler ev );
+      if not quit then refresh_input ()
+     
+  | None -> ()
 ;;

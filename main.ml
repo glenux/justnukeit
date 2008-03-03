@@ -1,7 +1,6 @@
 (* vim: set ts=2 sw=2 et : *)
-open Event;;
 
-
+(* open Event;; *)
 
 type config_t = {
   mutable width : int ;
@@ -45,6 +44,7 @@ let string_of_keyboard_event event =
 
 
 
+(*
 let rec event_loop () =
   print_endline "Event_loop...";
   Sdltimer.delay 20;
@@ -71,10 +71,10 @@ let rec event_loop () =
   | None -> event_loop ()
   | Some event -> match_event event;
 ;;
+*)
 
 
-
-let game_loop ~screen =
+let rec game_loop ~screen =
   let image = Sdlloader.load_image image_filename
   and image_from = Sdlvideo.rect 0 0 300 300 
   and image_to = Sdlvideo.rect 100 0 300 300 
@@ -82,14 +82,14 @@ let game_loop ~screen =
   Sdlvideo.blit_surface ~src:image ~src_rect:image_from ~dst:screen ~dst_rect:image_to ();
   Sdlvideo.flip screen;
   (* let action_fun = event_loop () ; *)
-  game_loop screen
+  game_loop ~screen:screen
 ;;
 
 
 
 let main () =
   let player1 = Player.create ()
-  and map1 = Maze.create ()
+  and map1 = Level.create ()
   and config = { width = 640 ; height = 480 }
   in
   ignore player1 ;

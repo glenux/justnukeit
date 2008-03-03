@@ -3,12 +3,13 @@ PROGRAMS=justnukeit
 justnukeit_OBJS= \
 				 Position \
 				 Timeline \
+				 Mouse \
+				 Joystick \
+				 Keyboard \
 				 Menu \
 				 Level \
 				 Player \
-				 Joystick \
-				 Keyboard \
-				 Mouse \
+				 Video \
 				 Game \
 				 main
 
@@ -45,7 +46,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call PROGRAM_template,$(prog))))
 .PHONY: all
 all: $(PROGRAMS)
 
-doc: 
+doc: $(ML) $(MLI)
 	ocamldoc $(INCS) -d doc -html $(ML) $(MLI)
 
 %.cmi: %.mli

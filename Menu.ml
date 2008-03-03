@@ -1,6 +1,6 @@
+(* vim: set ts=2 sw=2 et : *)
 
 (* position are not absolutes, but percentage *)
-(* vim: set ts=2 sw=2 et : *)
 
 type text_t = {
   position: Position.t;
@@ -31,7 +31,7 @@ type t = {
 };;
 
 let handle_event ev =
-  let actions = (Mouse.handle_event ev) :: (Mouse.handle_event ev)
+  let actions = (Keyboard.handle_event ev) :: (Mouse.handle_event ev)
   in
   actions;;
 

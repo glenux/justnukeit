@@ -18,7 +18,7 @@ type tileset_t =
     | Tileset_library (* crayon, books, papers, *)
 ;;
 
-type level_t = {
+type t = {
     size_x : int ;
     size_y : int ;
     items : (item_t ref) array array ;

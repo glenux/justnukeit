@@ -74,6 +74,7 @@ let rec event_loop () =
 *)
 
 
+(* 
 let rec game_loop ~screen =
   let image = Sdlloader.load_image image_filename
   and image_from = Sdlvideo.rect 0 0 300 300 
@@ -84,26 +85,39 @@ let rec game_loop ~screen =
   (* let action_fun = event_loop () ; *)
   game_loop ~screen:screen
 ;;
-
+*)
 
 
 let main () =
-  let player1 = Player.create ()
-  and map1 = Level.create ()
-  and config = { width = 640 ; height = 480 }
-  in
-  ignore player1 ;
-  ignore map1 ;
-  (* open window *)
-  Sdl.init [`VIDEO];
-  at_exit Sdl.quit;
-  Sdlttf.init ();
-  at_exit Sdlttf.quit;
-  (* set parameters & title *)
-  let screen = Sdlvideo.set_video_mode config.width config.height [`DOUBLEBUF]
-  in
-  game_loop ~screen:screen;
-  (* close window *)
+  let game = Game.create ()
+  in 
+  Printf.printf "Game.configure...\n" ;
+  Game.configure game ;
+  Game.init game ;
+  Printf.printf "Game.loop...\n" ;
+  Game.loop game ;
+  fun x -> ignore x
 ;;
 
-main ();
+(*
+  in 
+  let player1 = Player.create ()
+  and map1 = Level.create ()
+  and config = Config.create ()
+  in
+  ( try 
+    let config_file = config.find ()
+    config.load config_file
+    with
+    exit 1;
+  ) ;
+  (* { width = 640 ; height = 480 } *)
+  ignore player1 ;
+  ignore map1 ;
+  Game.init game config;
+  Game.loop game;
+  (* close window *)
+;;
+*)
+
+Printexc.print ( main () );

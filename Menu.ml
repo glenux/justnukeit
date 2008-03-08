@@ -30,8 +30,9 @@ type t = {
   keyboard_handle : string (* Keyboard.a *)
 };;
 
+(*
 let handle_event ev =
   let actions = (Keyboard.handle_event ev) :: (Mouse.handle_event ev)
   in
   actions;;
-
+*)

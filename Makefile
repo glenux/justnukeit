@@ -1,6 +1,8 @@
 PROGRAMS=justnukeit
 
 justnukeit_OBJS= \
+				 Common \
+				 Config \
 				 Position \
 				 Timeline \
 				 Mouse \
@@ -10,6 +12,7 @@ justnukeit_OBJS= \
 				 Level \
 				 Player \
 				 Video \
+				 Action \
 				 Game \
 				 main
 

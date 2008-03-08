@@ -4,7 +4,13 @@
 
 (** Returns a list of "abstract events" generated 
     by this SDL event *)
-let handle_event ev =
-  ignore ev ; []
+let handle_event mouse_ev anon_ev =
+  ignore mouse_ev ;
+  ignore anon_ev ;
+  [Action.None]
 ;;
 
+let init () =
+  (* do nothing *)
+  ()
+;;

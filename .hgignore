@@ -2,4 +2,9 @@
 reference/*.[^z][^i][^p]
 doc/*.html
 doc/*.css
-.swp$
+^.*\.swp$
+^.*\.cmx$
+^.*\.cmo$
+^.*\.cmi$
+^.*\.o$
+^justnukeit$

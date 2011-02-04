@@ -1,3 +1,4 @@
+export SHELL=bash
 PROGRAMS=justnukeit
 
 justnukeit_OBJS= \

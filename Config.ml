@@ -12,10 +12,10 @@ type t = {
 let create () =
   let config_dir = Printf.sprintf "%s/.justnukeit" ( Unix.getenv "HOME" )
   in
-  {
+  { (* default configuration *)
     config_dir = config_dir ;
-    video_width = 0 ;
-    video_height = 0 ;
+    video_width = 640 ;
+    video_height = 480 ;
     show_fps = false 
   }
 ;;

@@ -39,7 +39,11 @@ let init game =
   () 
 ;;
 
-
+(* FIXME: create some event mapper using configuration 
+ * lile « var event_config_map : game_config -> sdl_event -> event_action »
+ * and use it to match event_actions (for game actions) instead of matching SDL
+ * events
+ *)
 let add_actions game = 
   let anon_handler anon_ev = 
     match anon_ev with

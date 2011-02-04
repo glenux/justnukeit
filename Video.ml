@@ -35,7 +35,23 @@ let init config =
   in (
     video.width <- config.Config.video_width ;
     video.height <- config.Config.video_height ;
-    video.screen <- Some screen_surface
+    (* FIXME: test that screen surface exists *)
+    video.screen <- Some screen_surface ;
+
+    let image_intro_filename = "images/intro.jpg" in
+    let image_intro = Sdlloader.load_image image_intro_filename in
+    let image_intro_position = Sdlvideo.rect 0 0 640 480
+    in (
+      (* fill with white *)
+      Sdlvideo.fill_rect screen_surface (Sdlvideo.map_RGB screen_surface  Sdlvideo.white) ;
+      Sdlvideo.put_pixel screen_surface ~x:160 ~y:100 
+      (Sdlvideo.map_RGB screen_surface Sdlvideo.red);
+      Sdlvideo.flip screen_surface ;
+      (* draw intro image *)
+      Sdlvideo.blit_surface ~dst_rect:image_intro_position
+      ~src:image_intro ~dst:screen_surface ();
+      Sdlvideo.flip screen_surface ;
+    )
   )
 ;;
 
